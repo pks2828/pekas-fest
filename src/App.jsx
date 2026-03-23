@@ -10,7 +10,7 @@ const App = () => {
   const [copied, setCopied] = useState(false);
 
   const copyInfo = () => {
-    const text = `✨ *PEKAS FEST* ✨\nFiesta de Cumpleaños\n\n📍 Bola Ocho Restaurant Bar & Billar\n🕘 9:00 PM - 1:00 AM\n🎟 Aporte por persona: $700 MXN\n\n*Incluye:*\n• 2 mesas de billar (4 hrs)\n• Entradas para compartir\n• Tacos de bistec\n• Refresco\n• Tequila \n• Cubetas de cerveza\n• Palomitas de cortesía\n\n"Ven a celebrar una noche de fiesta, billar y buena vibra"`;
+    const text = `✨ *PEKAS BIRTHDAY* ✨\nFiesta de Cumpleaños\n\n📍 Bola Ocho Restaurant Bar & Billar\n🕘 9:00 PM - 1:00 AM\n🎟 Aporte por persona: $700 MXN\n\n*Incluye:*\n• 2 mesas de billar (4 hrs)\n• Entradas para compartir\n• Tacos de bistec\n• Refresco\n• Tequila\n• Cubetas de cerveza\n• Palomitas de cortesía\n\n"Ven a celebrar una noche de fiesta, billar y buena vibra"`;
 
     const doCopy = () => {
       setCopied(true);
@@ -83,7 +83,6 @@ const App = () => {
     <div style={{ background: '#0a0a0a', minHeight: '100vh', display: 'flex', justifyContent: 'center' }}>
       <div style={{ width: '100%', maxWidth: 420, fontFamily: "'DM Sans', sans-serif", color: '#fff', background: '#0a0a0a' }}>
 
-        {/* Google Font */}
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
           * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -93,18 +92,13 @@ const App = () => {
 
         {/* HERO */}
         <div style={{ position: 'relative', padding: '52px 28px 36px', overflow: 'hidden' }}>
-          {/* glow verde */}
           <div style={{ position: 'absolute', top: -80, left: -80, width: 320, height: 320, background: 'radial-gradient(circle, rgba(16,185,129,0.22) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          {/* glow amarillo */}
           <div style={{ position: 'absolute', bottom: -40, right: -60, width: 250, height: 250, background: 'radial-gradient(circle, rgba(234,179,8,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
-
-          {/* Bola 8 */}
           <div style={{ position: 'absolute', top: 28, right: 24, width: 64, height: 64, borderRadius: '50%', background: 'radial-gradient(circle at 38% 36%, #fff 0%, #10b981 45%, #065f46 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, color: '#fff', textShadow: '0 1px 3px rgba(0,0,0,0.6)', zIndex: 2, boxShadow: '0 0 0 3px rgba(16,185,129,0.25), 0 8px 24px rgba(0,0,0,0.5)' }}>8</div>
-
           <div style={{ position: 'relative', zIndex: 1 }}>
             <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.35em', color: '#10b981', textTransform: 'uppercase', marginBottom: 10 }}>Fiesta de Cumpleaños</div>
             <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(80px, 22vw, 108px)', lineHeight: 0.9, color: '#fff', marginBottom: 4 }}>
-              PEKAS<br /><span style={{ color: '#10b981' }}>FEST</span>
+              PEKAS<br /><span style={{ color: '#10b981' }}>BIRTHDAY</span>
             </div>
             <div style={{ fontSize: 12, fontWeight: 300, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', marginTop: 6 }}>Una noche que no vas a olvidar</div>
           </div>
@@ -121,26 +115,61 @@ const App = () => {
 
         {/* INFO ROWS */}
         <div style={{ padding: '0 28px', marginTop: 28 }}>
-          {[
-            {
-              label: 'Lugar', value: 'Bola Ocho Restaurant Bar & Billar',
-              icon: <svg fill="none" strokeWidth="1.5" viewBox="0 0 24 24" width="18" height="18" stroke="#10b981"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
-            },
-            {
-              label: 'Horario', value: '9:00 PM — 1:00 AM',
-              icon: <svg fill="none" strokeWidth="1.5" viewBox="0 0 24 24" width="18" height="18" stroke="#10b981"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-            },
-          ].map(({ label, value, icon }, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 0', borderBottom: '0.5px solid rgba(255,255,255,0.07)' }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(16,185,129,0.08)', border: '0.5px solid rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{icon}</div>
-              <div>
-                <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 3 }}>{label}</div>
-                <div style={{ fontSize: 15, color: '#fff' }}>{value}</div>
-              </div>
-            </div>
-          ))}
 
-          {/* PRECIO */}
+          {/* Ubicación */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 0', borderBottom: '0.5px solid rgba(255,255,255,0.07)' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(16,185,129,0.08)', border: '0.5px solid rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg fill="none" strokeWidth="1.5" viewBox="0 0 24 24" width="18" height="18" stroke="#10b981"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 3 }}>Lugar</div>
+              <div style={{ fontSize: 15, color: '#fff', marginBottom: 8 }}>Bola Ocho Restaurant Bar & Billar</div>
+              
+              <a
+                href="https://maps.app.goo.gl/guswAFEz6DQcHCpQ6"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 500, color: '#10b981', background: 'rgba(16,185,129,0.1)', border: '0.5px solid rgba(16,185,129,0.3)', borderRadius: 8, padding: '5px 10px', textDecoration: 'none', letterSpacing: '0.05em' }}
+              >
+                <svg fill="none" strokeWidth="1.5" viewBox="0 0 24 24" width="12" height="12" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+                Ver en Google Maps
+              </a>
+            </div>
+          </div>
+
+          {/* Horario */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 0', borderBottom: '0.5px solid rgba(255,255,255,0.07)' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(16,185,129,0.08)', border: '0.5px solid rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg fill="none" strokeWidth="1.5" viewBox="0 0 24 24" width="18" height="18" stroke="#10b981"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+            </div>
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 3 }}>Horario</div>
+              <div style={{ fontSize: 15, color: '#fff' }}>9:00 PM — 1:00 AM</div>
+            </div>
+          </div>
+
+          {/* Instagram */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 0', borderBottom: '0.5px solid rgba(255,255,255,0.07)' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(16,185,129,0.08)', border: '0.5px solid rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg fill="none" strokeWidth="1.5" viewBox="0 0 24 24" width="18" height="18" stroke="#10b981"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="#10b981"/></svg>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 3 }}>Instagram del lugar</div>
+              <div style={{ fontSize: 15, color: '#fff', marginBottom: 8 }}>@bolaochomty</div>
+              
+              <a
+                href="https://www.instagram.com/bolaochomty/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 500, color: '#10b981', background: 'rgba(16,185,129,0.1)', border: '0.5px solid rgba(16,185,129,0.3)', borderRadius: 8, padding: '5px 10px', textDecoration: 'none', letterSpacing: '0.05em' }}
+              >
+                <svg fill="none" strokeWidth="1.5" viewBox="0 0 24 24" width="12" height="12" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                Ver en Instagram
+              </a>
+            </div>
+          </div>
+
+          {/* Precio */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 0' }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(16,185,129,0.08)', border: '0.5px solid rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <svg fill="none" strokeWidth="1.5" viewBox="0 0 24 24" width="18" height="18" stroke="#10b981"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" /></svg>
@@ -153,6 +182,7 @@ const App = () => {
               </div>
             </div>
           </div>
+
         </div>
 
         {/* INCLUYE */}
@@ -197,7 +227,7 @@ const App = () => {
 
         {/* FOOTER */}
         <div style={{ textAlign: 'center', padding: '16px 28px 32px', fontSize: 10, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.12)', textTransform: 'uppercase' }}>
-          Pekas Fest · Edición Digital
+          Pekas Birthday · Edición Digital
         </div>
 
       </div>
