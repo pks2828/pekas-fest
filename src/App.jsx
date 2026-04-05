@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 
-// ── Número del organizador para RSVP (formato internacional sin +) ──
-const ORGANIZER_WA = '521XXXXXXXXXX'; // <-- cambia esto por tu número
 
 /* ─── Icons ─────────────────────────────────────────── */
 const Icon = ({ d, size = 18, fill = 'none', strokeWidth = 1.5 }) => (
@@ -25,11 +23,6 @@ const InstagramIcon = ({ size = 18 }) => (
   </svg>
 );
 
-const WhatsAppIcon = ({ size = 20 }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
-  </svg>
-);
 
 /* ─── Countdown hook ─────────────────────────────────── */
 function useCountdown(targetDate) {
@@ -69,47 +62,17 @@ const App = () => {
 
   const shareText = `✨ *PEKAS BIRTHDAY* ✨\nFiesta de Cumpleaños\n\n📍 Bola Ocho Restaurant Bar & Billar\n📅 25 de Abril\n🕘 9:00 PM - 1:00 AM\n🎟 Aporte por persona: $700 MXN\n\n*Incluye:*\n• 2 mesas de billar (4 hrs)\n• Entradas para compartir\n• Tacos de bistec\n• Refresco\n• Tequila\n• Cubetas de cerveza\n• Palomitas de cortesía\n\n"Ven a celebrar una noche de fiesta, billar y buena vibra"`;
 
-  // Share nativo con fallback a WhatsApp
-  const shareNative = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: 'PEKAS BIRTHDAY 🎱', text: shareText, url: 'https://pks2828.github.io/pekas-fest/' });
-        return;
-      } catch (_) { /* cancelado por el usuario */ }
-    }
-    // fallback
-    const encoded = encodeURIComponent(shareText);
-    window.open(`https://wa.me/?text=${encoded}`, '_blank');
-  };
-
-  // RSVP por WhatsApp al organizador
-  const rsvp = () => {
-    const msg = encodeURIComponent('¡Hola! Confirmo mi asistencia al Pekas Birthday 🎱🎉');
-    window.open(`https://wa.me/${ORGANIZER_WA}?text=${msg}`, '_blank');
-  };
-
-  // Descargar .ics + link Google Calendar
+  // Abrir Google Calendar con el evento prellenado
   const addToCalendar = () => {
-    const icsContent = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//PekasBirthday//ES',
-      'BEGIN:VEVENT',
-      'DTSTART:20260425T210000',
-      'DTEND:20260426T010000',
-      'SUMMARY:PEKAS BIRTHDAY 🎱',
-      'DESCRIPTION:Fiesta de cumpleaños · Billar\\, tequila\\, tacos y buena vibra · $700 MXN',
-      'LOCATION:Bola Ocho Restaurant Bar & Billar',
-      'END:VEVENT',
-      'END:VCALENDAR',
-    ].join('\r\n');
-
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'pekas-birthday.ics';
-    a.click();
-    URL.revokeObjectURL(url);
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: 'PEKAS BIRTHDAY 🎱',
+      dates: '20260425T210000/20260426T010000',
+      details: 'Fiesta de cumpleaños · Billar, tequila, tacos y buena vibra · $700 MXN\nhttps://pks2828.github.io/pekas-fest/',
+      location: 'Bola Ocho Restaurant Bar & Billar',
+      ctz: 'America/Mexico_City',
+    });
+    window.open(`https://calendar.google.com/calendar/render?${params}`, '_blank');
   };
 
   const copyInfo = () => {
@@ -141,7 +104,7 @@ const App = () => {
 
   return (
     <div style={{ background: DARK, minHeight: '100vh', display: 'flex', justifyContent: 'center' }}>
-      <div style={{ width: '100%', maxWidth: 430, fontFamily: "'DM Sans', sans-serif", color: '#fff', background: DARK, paddingBottom: 96 }}>
+      <div style={{ width: '100%', maxWidth: 430, fontFamily: "'DM Sans', sans-serif", color: '#fff', background: DARK, paddingBottom: 32 }}>
 
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
@@ -349,25 +312,13 @@ const App = () => {
         <div className="fade-up-6" style={{ margin:'24px 20px 0',padding:'18px 20px',
           borderLeft:`2px solid ${G}`,background:'rgba(16,185,129,.05)',
           borderRadius:'0 14px 14px 0' }}>
-          <p style={{ fontSize:13,fontStyle:'italic',fontWeight:300,color:'rgba(255,255,255,.5)',lineHeight:1.65 }}>
-            "ENTRADA PROHIBIDA A COCHI Y YAHIR"
+          <p style={{ fontSize:13,fontStyle:'italic',fontWeight:300,color:'rgba(255,255,255,.5)',lineHeight:1.65, textAlign:'center' }}>
+            ASISTENCIA PUNTUAL
           </p>
         </div>
 
-        {/* ── RSVP + CALENDARIO ── */}
-        <div style={{ padding:'24px 20px 0', display:'flex', flexDirection:'column', gap:12 }}>
-
-          {/* RSVP */}
-          <button onClick={rsvp} className="cta-main" style={{
-            width:'100%',padding:'17px 24px',borderRadius:16,border:'.5px solid rgba(16,185,129,.35)',
-            fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,
-            letterSpacing:'.08em',textTransform:'uppercase',cursor:'pointer',
-            display:'flex',alignItems:'center',justifyContent:'center',gap:10,
-            background:'rgba(16,185,129,.1)',color:G,
-          }}>
-            <WhatsAppIcon size={18} />
-            ¡Voy a ir! · Confirmar asistencia
-          </button>
+        {/* ── CALENDARIO ── */}
+        <div style={{ padding:'24px 20px 0' }}>
 
           {/* Agregar al calendario */}
           <button onClick={addToCalendar} className="cta-main" style={{
@@ -390,20 +341,6 @@ const App = () => {
 
       </div>
 
-      {/* ── STICKY SHARE BAR ── */}
-      <div className="sticky-bar">
-        <button onClick={shareNative} className="cta-main" style={{
-          width:'100%',padding:'18px 24px',borderRadius:18,border:'none',
-          fontFamily:"'DM Sans',sans-serif",fontSize:14,fontWeight:600,
-          letterSpacing:'.08em',textTransform:'uppercase',cursor:'pointer',
-          display:'flex',alignItems:'center',justifyContent:'center',gap:10,
-          background:'#10b981',color:'#052e16',
-          boxShadow:'0 8px 32px rgba(16,185,129,.45),0 2px 8px rgba(0,0,0,.4)',
-        }}>
-          <WhatsAppIcon size={20} />
-          Compartir invitación
-        </button>
-      </div>
 
     </div>
   );
