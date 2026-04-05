@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
+
+// ── Número del organizador para RSVP (formato internacional sin +) ──
+const ORGANIZER_WA = '521XXXXXXXXXX'; // <-- cambia esto por tu número
 
 /* ─── Icons ─────────────────────────────────────────── */
 const Icon = ({ d, size = 18, fill = 'none', strokeWidth = 1.5 }) => (
@@ -55,11 +59,57 @@ const App = () => {
   const [copied, setCopied] = useState(false);
   const countdown = useCountdown('2026-04-25T21:00:00');
 
+  // Confetti al cargar
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 }, colors: ['#10b981', '#6ee7b7', '#fbbf24', '#fff', '#065f46'] });
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
+
   const shareText = `✨ *PEKAS BIRTHDAY* ✨\nFiesta de Cumpleaños\n\n📍 Bola Ocho Restaurant Bar & Billar\n📅 25 de Abril\n🕘 9:00 PM - 1:00 AM\n🎟 Aporte por persona: $700 MXN\n\n*Incluye:*\n• 2 mesas de billar (4 hrs)\n• Entradas para compartir\n• Tacos de bistec\n• Refresco\n• Tequila\n• Cubetas de cerveza\n• Palomitas de cortesía\n\n"Ven a celebrar una noche de fiesta, billar y buena vibra"`;
 
-  const shareWhatsApp = () => {
+  // Share nativo con fallback a WhatsApp
+  const shareNative = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'PEKAS BIRTHDAY 🎱', text: shareText, url: 'https://pks2828.github.io/pekas-fest/' });
+        return;
+      } catch (_) { /* cancelado por el usuario */ }
+    }
+    // fallback
     const encoded = encodeURIComponent(shareText);
     window.open(`https://wa.me/?text=${encoded}`, '_blank');
+  };
+
+  // RSVP por WhatsApp al organizador
+  const rsvp = () => {
+    const msg = encodeURIComponent('¡Hola! Confirmo mi asistencia al Pekas Birthday 🎱🎉');
+    window.open(`https://wa.me/${ORGANIZER_WA}?text=${msg}`, '_blank');
+  };
+
+  // Descargar .ics + link Google Calendar
+  const addToCalendar = () => {
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//PekasBirthday//ES',
+      'BEGIN:VEVENT',
+      'DTSTART:20260425T210000',
+      'DTEND:20260426T010000',
+      'SUMMARY:PEKAS BIRTHDAY 🎱',
+      'DESCRIPTION:Fiesta de cumpleaños · Billar\\, tequila\\, tacos y buena vibra · $700 MXN',
+      'LOCATION:Bola Ocho Restaurant Bar & Billar',
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'pekas-birthday.ics';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const copyInfo = () => {
@@ -304,16 +354,45 @@ const App = () => {
           </p>
         </div>
 
+        {/* ── RSVP + CALENDARIO ── */}
+        <div style={{ padding:'24px 20px 0', display:'flex', flexDirection:'column', gap:12 }}>
+
+          {/* RSVP */}
+          <button onClick={rsvp} className="cta-main" style={{
+            width:'100%',padding:'17px 24px',borderRadius:16,border:'.5px solid rgba(16,185,129,.35)',
+            fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,
+            letterSpacing:'.08em',textTransform:'uppercase',cursor:'pointer',
+            display:'flex',alignItems:'center',justifyContent:'center',gap:10,
+            background:'rgba(16,185,129,.1)',color:G,
+          }}>
+            <WhatsAppIcon size={18} />
+            ¡Voy a ir! · Confirmar asistencia
+          </button>
+
+          {/* Agregar al calendario */}
+          <button onClick={addToCalendar} className="cta-main" style={{
+            width:'100%',padding:'17px 24px',borderRadius:16,border:'.5px solid rgba(255,255,255,.1)',
+            fontFamily:"'DM Sans',sans-serif",fontSize:13,fontWeight:600,
+            letterSpacing:'.08em',textTransform:'uppercase',cursor:'pointer',
+            display:'flex',alignItems:'center',justifyContent:'center',gap:10,
+            background:'rgba(255,255,255,.04)',color:'rgba(255,255,255,.55)',
+          }}>
+            <Icon size={18} d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+            Agregar al calendario
+          </button>
+
+        </div>
+
         {/* ── FOOTER ── */}
-        <div style={{ textAlign:'center',padding:'20px 28px 12px',fontSize:10,letterSpacing:'.2em',color:'rgba(255,255,255,.1)',textTransform:'uppercase' }}>
+        <div style={{ textAlign:'center',padding:'24px 28px 12px',fontSize:10,letterSpacing:'.2em',color:'rgba(255,255,255,.1)',textTransform:'uppercase' }}>
           Pekas Birthday · Edición Digital
         </div>
 
       </div>
 
-      {/* ── STICKY WHATSAPP BAR ── */}
+      {/* ── STICKY SHARE BAR ── */}
       <div className="sticky-bar">
-        <button onClick={shareWhatsApp} className="cta-main" style={{
+        <button onClick={shareNative} className="cta-main" style={{
           width:'100%',padding:'18px 24px',borderRadius:18,border:'none',
           fontFamily:"'DM Sans',sans-serif",fontSize:14,fontWeight:600,
           letterSpacing:'.08em',textTransform:'uppercase',cursor:'pointer',
@@ -322,7 +401,7 @@ const App = () => {
           boxShadow:'0 8px 32px rgba(16,185,129,.45),0 2px 8px rgba(0,0,0,.4)',
         }}>
           <WhatsAppIcon size={20} />
-          Compartir por WhatsApp
+          Compartir invitación
         </button>
       </div>
 
